@@ -1,0 +1,18 @@
+CFG Bahasa Italia
+
+S --> NOUN VERB NOUN
+NOUN --> io | padre | madre | pizza |
+nuoto | chiesa | chitarra | colosseo
+| calcio | storia
+VERB --> studiando | giocando | mangiare |
+visitare | acquistare 
+
+i	o
+p	e
+m	a
+n
+c
+s
+v
+g
+a
