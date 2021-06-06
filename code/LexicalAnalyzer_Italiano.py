@@ -55,7 +55,7 @@ class FiniteAutomata:
                     nextNum = 3
                 elif (grammar[i]=='m'):
                     nextNum = 8
-                elif (grammar[i]=='n'):
+                elif (grammar[i]=='f'):
                     nextNum = 13
                 elif (grammar[i]=='c'):
                     nextNum = 16
@@ -104,8 +104,8 @@ class FiniteAutomata:
                     nextNum = 0
 
             #ends with 'o'
-            elif (grammar=='nuoto #') or (grammar=='colosseo #') or (grammar=='studiando #') or (grammar=='giocando #'):
-                if (grammar=='nuoto #' and i==3) or (grammar=='studiando #' and i==7) or ((grammar=='colosseo #' or grammar=='giocando #') and i==6):
+            elif (grammar=='fungo #') or (grammar=='colosseo #') or (grammar=='studiando #') or (grammar=='giocando #'):
+                if (grammar=='fungo #' and i==3) or (grammar=='studiando #' and i==7) or ((grammar=='colosseo #' or grammar=='giocando #') and i==6):
                     nextNum = 1
                 elif (grammar=='studiando #' and i==2):
                     nextNum = 34
@@ -149,11 +149,17 @@ def lexicalAnalyze(inputItaliano, inputGrammar, transition):
         charNow = inputGrammar[i]
         grammarNow += charNow
         prevState = stateNow
-        stateNow = transition[(stateNow, charNow)]
+
+        #check if input is alphabet a-z or space only
+        if (charNow in list(string.ascii_letters) or charNow==' ' or charNow=='#'):
+            stateNow = transition[(stateNow, charNow)]
+        else:
+            message = 'Characters Input not Valid! Input must be Alphabet or Space Characters!'
+            return message
 
         #trace all inputs per iteration
         print(' Trace :')
-        print(' - Current Grammar --> ',grammarNow)
+        print(' - Current Word --> ',grammarNow)
         print(' - Current State --> ',prevState)
         print(' - Current Char --> ', charNow)
         print(' - Next State --> ',stateNow,'\n')
@@ -161,31 +167,31 @@ def lexicalAnalyze(inputItaliano, inputGrammar, transition):
         #reach the accepted state condition
         if stateNow=='q2' or stateNow=='q7' or stateNow=='q12':
             totalWord = totalWord+1
-            print('+ Grammar ',totalWord,' Check = ',grammarNow,' --> Valid \n')
+            print('+ Word ',totalWord,' Check = ',grammarNow,' --> Valid \n')
             grammarNow = ''
         #abort if not
         elif stateNow == 'error':
             totalWord = totalWord+1
-            print('+ Grammar ',totalWord,' Check = ',grammarNow,' --> not Valid \n')
+            print('+ Word ',totalWord,' Check = ',grammarNow,' --> not Valid \n')
             break
         #increment for next character iteration
         i = i+1
 
     #final analyze
     if stateNow =='accept':
-        message = 'Final Grammar Check : {} --> Valid'.format(inputItaliano)
+        message = 'Final Word(s) Check : {} --> Valid'.format(inputItaliano)
     else:
-        message = 'Final Grammar Check : {} --> not Valid'.format(inputItaliano)
+        message = 'Final Word(s) Check : {} --> not Valid'.format(inputItaliano)
     
     return message
 
 
-#main
+#main function
 if __name__ == "__main__":
     #initiate FA Class
     LexicalFA = FiniteAutomata(55)
     #initiate all known grammar
-    LexicalFA.listGrammar = ['io', 'padre', 'madre', 'pizza', 'nuoto', 'chiesa', 'chitarra', 'colosseo', 'calcio', 'storia',
+    LexicalFA.listGrammar = ['io', 'padre', 'madre', 'pizza', 'fungo', 'chiesa', 'chitarra', 'colosseo', 'calcio', 'storia',
                             'studiando', 'giocando', 'mangiare', 'visitare', 'acquistare']
 
     #execute method on FA Class
@@ -201,16 +207,18 @@ if __name__ == "__main__":
 
     def help():
         print('Command List :')
-        print('*to Show Grammar Dictionary : type -> dictionary')
-        print('*to Exit program : type -> exit')
+        print('*to Show Grammar Dictionary                                      : type -> dictionary')
+        print('*to Testing the Program with Example of Valid and non-Valid Words: type -> test')
+        print('*to Exit program                                                 : type -> exit')
 
 
     #loop for input until exit
     while (inputItaliano!=exit):
         print('----------------------------------------')
         print('*to Show Command List : type -> help \n')
-        inputItaliano = input('Input Italiano Grammar : ')
+        inputItaliano = input('Input Italiano Word(s) : ')
         print('----------------------------------------')
+        
         if (inputItaliano=='exit'):
             break
         print('Output : \n')
@@ -221,6 +229,14 @@ if __name__ == "__main__":
             inputItaliano = ''
         elif (inputItaliano=='help'):
             help()
+        elif (inputItaliano=='test'):
+            print('*Valid Words Example :')
+            defaultTesting = lexicalAnalyze('io giocando calcio', 'io giocando calcio #', transition)
+            print(defaultTesting,'\n')
+
+            print('*non-Valid Words Example :')
+            defaultTesting = lexicalAnalyze('voi cucinando spaghetti', 'voi cucinando spaghetti #', transition)
+            print(defaultTesting,'\n')
         else:     
             #convert to lexical format --> 'string #'
             inputGrammar = inputItaliano.lower()+" #"
