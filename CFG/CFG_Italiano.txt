@@ -1,0 +1,12 @@
+Context-Free Grammar Italiano
+*Backus-Naur Form format
+
+<S> :== <noun> <verb> <noun>
+<noun> :== io | padre | madre | pizza | fungo | chiesa | chitarra | colosseo | calcio | storia
+<verb> :== studiando | giocando | mangiare | visitare | acquistare 
+
+* Simbol-non terminal : S (Starting Symbol), noun, verb
+* Simbol terminal :
+io (saya/aku), padre (ayah), madre (ibu), pizza (pizza), fungo (jamur), chiesa (gereja), chitarra (gitar),
+colosseo (colosseum/koloseum), calcio (sepakbola), storia (sejarah), studiando (belajar), giocando (bermain),
+mangiare (makan), visitare (mengunjungi), acquistare (membeli)
